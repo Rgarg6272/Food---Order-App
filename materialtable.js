@@ -2,13 +2,25 @@ import React, { useState } from "react";
 import "./App.css";
 import MaterialTable, { MTableFilterRow } from "material-table";
 import SearchIcon from "@material-ui/icons/Search";
+import EditIcon from "@material-ui/icons/Edit";
+import { DatePicker } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
 import {
   useMediaQuery,
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core";
+import YourForm from "./component/YourForm";
 
 function App() {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedRowId, setSelectedRowId] = useState(null);
   const [tableData, setTableData] = useState([
     {
       name: "Raj",
@@ -17,7 +29,7 @@ function App() {
       age: 23,
       gender: "M",
       city: "Chennai",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 22000,
     },
     {
@@ -27,7 +39,7 @@ function App() {
       age: null,
       gender: "M",
       city: "Delhi",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 20000,
     },
     {
@@ -37,7 +49,7 @@ function App() {
       age: 17,
       gender: "F",
       city: "Noida",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 25000,
     },
     {
@@ -47,7 +59,7 @@ function App() {
       age: 20,
       gender: "M",
       city: "Mumbai",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 23000,
     },
     {
@@ -57,7 +69,7 @@ function App() {
       age: 25,
       gender: "F",
       city: "Patna",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 21900,
     },
     {
@@ -67,7 +79,7 @@ function App() {
       age: 35,
       gender: "M",
       city: "Delhi",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 22300,
     },
     {
@@ -77,7 +89,7 @@ function App() {
       age: 17,
       gender: "F",
       city: "Noida",
-      date: "20-04-2001",
+      birthday: "20-04-2001",
       Fee: 25000,
     },
   ]);
@@ -106,8 +118,36 @@ function App() {
       align: "center",
       filtering: false,
     },
+    {
+      title: "DOB",
+      field: "birthday",
+      type: "date",
+      editComponent: (props) => (
+        <MuiPickersUtilsProvider
+          utils={DateFnsUtils}
+          locale={props.dateTimePickerLocalization}
+        >
+          <DatePicker
+            format="dd/MM/yyyy"
+            value={props.value || null}
+            onChange={props.onChange}
+            clearable
+            InputProps={{
+              style: {
+                fontSize: 13,
+              },
+            }}
+          />
+        </MuiPickersUtilsProvider>
+      ),
+    },
     { title: "City", field: "city", align: "center", filtering: false },
-    { title: "DOB", field: "date", align: "center", filtering: false },
+    // {
+    //   title: "DOB",
+    //   field: "date",
+    //   align: "center",
+    //   filtering: false,
+    // },
     {
       title: "School Fees",
       field: "Fee",
@@ -123,6 +163,7 @@ function App() {
 
   return (
     <>
+      <YourForm />
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <h1 align="center">Material Table</h1>
