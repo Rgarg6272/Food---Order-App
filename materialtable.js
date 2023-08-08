@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import InfoIcon from "@material-ui/icons/Info";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MaterialTable from "material-table";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   paper: {
-    position: "absolute",
+    position: "relative",
     width: "90%",
     maxWidth: 400,
     backgroundColor: theme.palette.background.paper,
@@ -31,27 +31,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const data = [
-  {
-    name: "John Doe",
-    age: 30,
-    gender: "Male",
-    bio: "Details about John Doe...",
-  },
-];
-
 export default function SimpleModal() {
+  const data = [
+    {
+      name: "John Doe",
+      age: 30,
+      gender: "Male",
+      delegated: "View details",
+    },
+  ];
   const columns = [
     { title: "Name", field: "name" },
     { title: "Age", field: "age", type: "numeric" },
     { title: "Gender", field: "gender" },
     {
       title: "Bio Data",
+      field: "delegated",
       render: (rowData) => (
-        <InfoIcon
-          onClick={() => handleOpen(rowData)}
-          style={{ cursor: "pointer" }}
-        />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <a style={{ cursor: "pointer" }} onClick={() => handleOpen(rowData)}>
+            <span
+              style={{
+                marginRight: "5px",
+                position: "relative",
+                bottom: "6px",
+                textDecoration: "underline",
+              }}
+            >
+              View Details
+            </span>
+            <ExitToAppIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => handleOpen(rowData)}
+            />
+          </a>
+        </div>
       ),
     },
   ];
@@ -94,6 +113,7 @@ export default function SimpleModal() {
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        className={classes.modal}
       >
         {body}
       </Modal>
