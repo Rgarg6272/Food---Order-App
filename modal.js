@@ -17,22 +17,28 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: "90%",
     maxWidth: 400,
+    height: "230px",
+    maxHeight: "80vh",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: "0px 30px 17px",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "space-between",
   },
 
   paperDialog1: {
     position: "absolute",
     width: "90%",
     maxWidth: 600,
+    height: "230px",
+    maxHeight: "80vh",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: "0px 30px 17px",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "space-between",
   },
 
   closeIcon: {
@@ -57,7 +63,10 @@ const useStyles = makeStyles((theme) => ({
 
   closeButtonGrid: {
     display: "flex",
-    justifyContent: "right",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    marginTop: "auto",
+    paddingTop: "1rem",
   },
   typoHeaderContainer: {
     padding: "1rem 1rem 1rem 0rem",
