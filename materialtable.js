@@ -4,6 +4,26 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="flag">
+      <div class="top"></div>
+      <div class="middle">
+        <div class="wheel">
+          <span class="line"></span>
+        </div>
+      </div>
+      <div class="bottom"></div>
+    </div>
+  </body>
+</html>
 
   paperDialog: {
     position: "absolute",
