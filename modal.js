@@ -1,84 +1,101 @@
-.top,
-.middle,
-.bottom {
-  height: 60px;
-  width: 350px;
-}
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import CloseIcon from "@material-ui/icons/Close";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Modal from "@material-ui/core/Modal";
+import { useStyles } from "../css/MemberDetails";
 
-.top {
-  background-color: #ff9933;
-}
+const SearchDialog = ({ handleSearchDialog }) => {
+    const classes = useStyles();
+    const [open, setOpen] = useState(true);
 
-.middle {
-  background-color: white;
-  display: flex;
-  justify-content: center;
-}
+    const handleClose = () => {
+        setOpen(false);
+        handleSearchDialog()
+    };
 
-.bottom {
-  background-color: green;
-}
+    const handleTable = () => {
+        console.log("Hi Table");
+        setOpen(false);
+    }
 
-.wheel {
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
-  outline: 1px solid darkblue;
-  position: relative;
-}
+    const searchBody = (
+        <div className={classes.paperDialog2}>
+            <>
+                <Grid container className={classes.typoHeaderContainer}>
+                    <Grid item xs={12} style={{ textAlign: "right" }}>
+                        <CloseIcon className={classes.closeIcon} onClick={handleClose} />
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <Grid
+                        item
+                        xs={12}
+                        className={classes.errorIconGrid}
+                    >
+                        <ErrorOutlineIcon
+                            className={classes.errorIcon}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <Grid item xs={12} style={{ paddingBottom: "5px" }}>
+                        <Typography
+                            variant="caption"
+                            className={classes.typoHeaderSearch}
+                        >
+                            Member not Eligible in PHP
+                       </Typography>
+                        <Typography
+                            variant="caption"
+                            className={classes.typoHeaderSearch}
+                        >
+                            Do you still want to continue?
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <Grid
+                        item
+                        xs={12}
+                        className={classes.buttonGrid}
+                    >
+                        <Button
+                            variant="contained"
+                            onClick={handleTable}
+                            className={classes.closeButton3}>
+                            Yes
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleClose}
+                            className={classes.closeButton2}>
+                            No
+                        </Button>
+                    </Grid>
+                </Grid>
+            </>
+        </div>
+    );
 
-.line {
-  position: absolute;
-  height: 100%;
-  width: 1px;
-  background-color: darkblue;
-  left: 50%;
-}
+    return (
+        <React.Fragment>
+            <div>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    className={classes.modal}
+                >
+                    {searchBody}
+                </Modal>
+            </div>
+        </React.Fragment>
+    );
+};
 
-.line:nth-child(1) {
-  transform: rotate(15deg);
-}
-
-.line:nth-child(2) {
-  transform: rotate(30deg);
-}
-
-.line:nth-child(3) {
-  transform: rotate(45deg);
-}
-
-.line:nth-child(4) {
-  transform: rotate(60deg);
-}
-
-.line:nth-child(5) {
-  transform: rotate(75deg);
-}
-
-.line:nth-child(6) {
-  transform: rotate(90deg);
-}
-
-.line:nth-child(7) {
-  transform: rotate(105deg);
-}
-
-.line:nth-child(8) {
-  transform: rotate(120deg);
-}
-
-.line:nth-child(9) {
-  transform: rotate(135deg);
-}
-
-.line:nth-child(10) {
-  transform: rotate(150deg);
-}
-
-.line:nth-child(11) {
-  transform: rotate(165deg);
-}
-
-.line:nth-child(12) {
-  transform: rotate(180deg);
-}
+export default SearchDialog;
