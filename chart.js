@@ -34,7 +34,7 @@ export const DoughnutChart = ({ title, legendPos, legendDis, cutout, width, heig
 
 
     return (
-        <div style={{ width: "30%", height: "30%" }}>
+        <div style={{width: '35%' }}>
             <Doughnut
                 data={chartConfig}
                 options={{
@@ -65,7 +65,8 @@ export const DoughnutChart = ({ title, legendPos, legendDis, cutout, width, heig
                             ctx = chart.ctx;
                         ctx.restore();
                         ctx.font = fontSize + "em sans-serif";
-                        ctx.textBaseLine = "Top";
+                        ctx.textAlign = "center";
+                        ctx.textBaseLine = "middle";
                         const text = count,
                             textX = Math.round((width - ctx.measureText(text).width) / 2),
                             textY = donutY;
@@ -77,7 +78,7 @@ export const DoughnutChart = ({ title, legendPos, legendDis, cutout, width, heig
                 }]
                 }
             />
-        </div>
+         </div>
     )
 }
 
