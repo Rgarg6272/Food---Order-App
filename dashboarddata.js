@@ -5,26 +5,73 @@ import {
   makeStyles,
   Card,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import { inquiriesStyles } from "../../../css/InquiriesCss";
 import { commonFontSizes } from "../../../css/FontSizes";
 import {
   donutChartData,
   InquiriesData,
+  InquiriesProcessorLegend,
 } from "../../../../constants/inquiriesData";
-import { DoughnutChart } from '../../../common/charts/DoghnutChart'
+import { DoughnutChart } from "../../../common/charts/DoghnutChart";
 import { useEffect } from "react";
 
+import StopIcon from "@material-ui/icons/Stop";
 const useStyles = makeStyles((theme) => inquiriesStyles(theme));
+const useStyles2 = makeStyles((theme) => ({
+  DoughnutChartHeight: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "300px",
+   
+      [theme.breakpoints.down(2100)]: {
+        height: "300px", //67%
+      },
 
+      [theme.breakpoints.down("lg")]: {
+        height: "300px", //75%
+      },
+
+      [theme.breakpoints.down(1750)]: {
+        height: "300px",//80%
+      },
+
+      [theme.breakpoints.down(1550)]: {
+        height: "300px", //90%
+      },
+
+      [theme.breakpoints.down(1400)]: {
+        height: "300px",
+      },
+      [theme.breakpoints.down('md')]: {
+
+        height: "400px",
+
+    }
+   
+  },
+}));
 export const InquiryDashboardData = (props) => {
   const { inquriesData } = props;
-  const [newCount, setNew] = useState(inquriesData ? inquriesData.New_Inquiries_count : '');
-  const [resolved, setResolved] = useState(inquriesData ? inquriesData.Resloved_Inquiries_count : '');
-  const [inprogress, setInprogress] = useState(inquriesData ? (inquriesData.Inprogress_Inquiries_count) : '');
-  const [all, setAll] = useState(inquriesData ? (inquriesData.All_Inquiries_count) : '')
-  const [date, setDate] = useState(inquriesData ? (inquriesData.User_Login_Date) : '')
+  const [newCount, setNew] = useState(
+    inquriesData ? inquriesData.New_Inquiries_count : ""
+  );
+  const [resolved, setResolved] = useState(
+    inquriesData ? inquriesData.Resloved_Inquiries_count : ""
+  );
+  const [inprogress, setInprogress] = useState(
+    inquriesData ? inquriesData.Inprogress_Inquiries_count : ""
+  );
+  const [all, setAll] = useState(
+    inquriesData ? inquriesData.All_Inquiries_count : ""
+  );
+  const [date, setDate] = useState(
+    inquriesData ? inquriesData.User_Login_Date : ""
+  );
   const classes = useStyles();
+  const classes2 = useStyles2();
   const [donutChartData, setDonutChartData] = useState({
     labels: [],
     datasets: [
@@ -50,29 +97,22 @@ export const InquiryDashboardData = (props) => {
     ],
   });
 
-
-
   useEffect(() => {
-    setNew(inquriesData ? inquriesData.New_Inquiries_count : '')
-    setResolved(inquriesData ? inquriesData.Resloved_Inquiries_count : '')
-    setInprogress(inquriesData ? inquriesData.Inprogress_Inquiries_count : '')
-    setAll(inquriesData ? inquriesData.All_Inquiries_count : '')
-    setDate(inquriesData ? inquriesData.User_Login_Date : '')
+    setNew(inquriesData ? inquriesData.New_Inquiries_count : "");
+    setResolved(inquriesData ? inquriesData.Resloved_Inquiries_count : "");
+    setInprogress(inquriesData ? inquriesData.Inprogress_Inquiries_count : "");
+    setAll(inquriesData ? inquriesData.All_Inquiries_count : "");
+    setDate(inquriesData ? inquriesData.User_Login_Date : "");
   }, [inquriesData]);
 
   const data = {
-    labels: ['New', 'Resolved', 'Inprogress'],
+    labels: ["New", "Resolved", "Inprogress"],
     datasets: [
       {
-        label: '# of Votes',
+        label: "# of Votes",
         data: [newCount, resolved, inprogress],
-        backgroundColor: [
-          '#E18210',
-          '#29A1C6',
-          '#A71930',
-        ],
+        backgroundColor: ["#E18210", "#29A1C6", "#A71930"],
         // cutout:'90%'
-
       },
     ],
   };
@@ -82,10 +122,9 @@ export const InquiryDashboardData = (props) => {
     data,
 
     // plugins : [doughnutLabelsLine]
-
-  }
+  };
   const options = {
-    type: 'outlabeledDoughnut',
+    type: "outlabeledDoughnut",
     responsive: true,
     maintainAspectRatio: true,
     // elements: {
@@ -112,33 +151,77 @@ export const InquiryDashboardData = (props) => {
     //   }
     // },
     tooltips: {
-      enabled: true
-    }
-  }
-
-
+      enabled: true,
+    },
+  };
 
   const handleDate = () => {
     const today = new Date();
     return today;
-  }
+  };
   return (
     <Container className={classes.inquiryDataDashboard}>
-      <Grid container style={{ justifyContent: "center" }}>
-        <span style={{ fontSize: "0.875rem", color: "#000000", display: 'flex', justifyContent: "right", width: '100%' }}>Status shown as on today</span>
-        {all &&
-          <DoughnutChart
-            count={all}
-            legendDis={false}
-            cutout={6}
-            width={300}
-            height={300}
-            countPosY={0}
-            totalPosY={40}
-            countPosX={0}
-            totalPosX={0}
-            chartConfig={data} />
-        }
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          style={{
+            display: "flex",
+            justifyContent: "right",
+            paddingRight: "20px",
+          }}
+        >
+          <Typography style={{ fontSize: "0.875rem", color: "#000000",paddingTop:'1%' }}>
+            Status shown as on today
+          </Typography>
+        </Grid>
+        {/* <span style={{ fontSize: "0.875rem", color: "#000000", display: 'flex', justifyContent: "right", width: '100%' }}>Status shown as on today</span> */}
+        {all && (
+          <Grid
+            item
+            xs={12}
+            className={classes2.DoughnutChartHeight}
+            // style={{
+            //   display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px'
+            // }}
+          >
+            <DoughnutChart
+              count={all}
+              legendDis={false}
+              cutout={6}
+              width={300}
+              height={300}
+              countPosY={-70}
+              totalPosY={0}
+              countPosX={0}
+              totalPosX={40}
+              chartConfig={data}
+            />
+          </Grid>
+       
+        )}
+         <Grid item xs={12} style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
+
+         {InquiriesProcessorLegend.map((item) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    marginRight: "1rem%",
+                  }}
+                >
+                  <p>{item.label}</p>
+                  <StopIcon
+                    style={{ color: item.color, verticalAlign: "middle" }}
+                  />
+                  <p>{item.id==="New" ? newCount : item.id==="Inprogress" ? inprogress : resolved}</p>
+                </div>
+              );
+            })}
+          </Grid>
       </Grid>
     </Container>
   );
