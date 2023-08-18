@@ -16,19 +16,19 @@ const useStyles = makeStyles((theme) => ({
     },
 
     [theme.breakpoints.down("lg")]: {
-      width: "50%", //75%
+      width: "60%", //75%
     },
 
     [theme.breakpoints.down(1750)]: {
-      width: "50%", //80%
+      width: "60%", //80%
     },
 
     [theme.breakpoints.down(1550)]: {
-      width: "50%", //90%
+      width: "60%", //90%
     },
 
     [theme.breakpoints.down(1400)]: {
-      width: "50%",
+      width: "60%",
     },
     [theme.breakpoints.down("md")]: {
       width: "60%",
@@ -52,10 +52,10 @@ export const DoughnutChart = ({
 }) => {
   const classes = useStyles();
 
-  let fontSize = 1;
+  let fontSize = 0.5;
   let donutX;
   let donutY = 0;
-  let cFontWeight = 500;
+  let cFontWeight = 200;
 
   if (title && title.includes("DAILY")) {
     fontSize = (height / 200).toFixed(2);
@@ -114,21 +114,24 @@ export const DoughnutChart = ({
                 //height = chart.height
                 ctx = chart.ctx;
               ctx.restore();
-              ctx.font = 1 + "em sans-serif";
+              ctx.font = `${fontSize}em sans-serif`;
               ctx.textAlign = "center";
               ctx.textBaseLine = "start";
+              ctx.fillStyle = "#2c2b2c";
+              ctx.fontWeight = cFontWeight;
 
               // Calculate text position
 
               const textX = Math.round(width / 2);
               const textY = donutY - totalPosY;
-              const countTextX = count ? textY + 80 + countPosY : textY;
-              const countTextY = count ? textY + 110 + countPosY : textY;
+              const countTextX = count ? textY + 20 + countPosY : textY;
+              const countTextY = count ? textY + 40 + countPosY : textY;
               // Draw the text
-
               ctx.fillText("All Inquiries", textX, textY);
+
               ctx.fontWeight = cFontWeight;
               ctx.fillText(count, textX, countTextY, countTextX);
+
               ctx.save();
             },
           },
