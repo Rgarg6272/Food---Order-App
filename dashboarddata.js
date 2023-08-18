@@ -25,32 +25,32 @@ const useStyles2 = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     height: "300px",
-   
-      [theme.breakpoints.down(2100)]: {
-        height: "300px", //67%
-      },
 
-      [theme.breakpoints.down("lg")]: {
-        height: "300px", //75%
-      },
+    [theme.breakpoints.down(2100)]: {
+      height: "300px", //67%
+    },
 
-      [theme.breakpoints.down(1750)]: {
-        height: "300px",//80%
-      },
+    [theme.breakpoints.down("lg")]: {
+      height: "300px", //75%
+    },
 
-      [theme.breakpoints.down(1550)]: {
-        height: "300px", //90%
-      },
+    [theme.breakpoints.down(1750)]: {
+      height: "300px",//80%
+    },
 
-      [theme.breakpoints.down(1400)]: {
-        height: "300px",
-      },
-      [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down(1550)]: {
+      height: "300px", //90%
+    },
 
-        height: "400px",
+    [theme.breakpoints.down(1400)]: {
+      height: "300px",
+    },
+    [theme.breakpoints.down('md')]: {
+
+      height: "400px",
 
     }
-   
+
   },
 }));
 export const InquiryDashboardData = (props) => {
@@ -171,7 +171,7 @@ export const InquiryDashboardData = (props) => {
             paddingRight: "20px",
           }}
         >
-          <Typography style={{ fontSize: "0.875rem", color: "#000000",paddingTop:'1%' }}>
+          <Typography style={{ fontSize: "0.875rem", color: "#000000", paddingTop: '1%' }}>
             Status shown as on today
           </Typography>
         </Grid>
@@ -180,48 +180,39 @@ export const InquiryDashboardData = (props) => {
           <Grid
             item
             xs={12}
-            className={classes2.DoughnutChartHeight}
-            // style={{
-            //   display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px'
-            // }}
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
           >
-            <DoughnutChart
-              count={all}
-              legendDis={false}
-              cutout={6}
-              width={300}
-              height={300}
-              countPosY={-70}
-              totalPosY={0}
-              countPosX={0}
-              totalPosX={40}
-              chartConfig={data}
-            />
-          </Grid>
-       
-        )}
-         <Grid item xs={12} style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
-
-         {InquiriesProcessorLegend.map((item) => {
-              return (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    marginRight: "1rem%",
-                  }}
-                >
+            <div style={{ width: '20%', marginLeft: '20px' }}>
+              {InquiriesProcessorLegend.map((item) => (
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginRight: '1rem' }}>
                   <p>{item.label}</p>
                   <StopIcon
                     style={{ color: item.color, verticalAlign: "middle" }}
                   />
-                  <p>{item.id==="New" ? newCount : item.id==="Inprogress" ? inprogress : resolved}</p>
+                  <p>{item.id === "New" ? newCount : item.id === "Inprogress" ? inprogress : resolved}</p>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            <div style={{ width: '80%' }} className={classes2.DoughnutChartHeight}>
+              <DoughnutChart
+                count={all}
+                legendDis={false}
+                cutout={6}
+                width={400}
+                height={250}
+                countPosY={-70}
+                totalPosY={0}
+                countPosX={0}
+                totalPosX={40}
+                chartConfig={data}
+              />
+            </div>
           </Grid>
+        )}
       </Grid>
     </Container>
   );
