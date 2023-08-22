@@ -51,6 +51,7 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowSelection = (rowData) => {
+    console.log("selected row data", rowData);
     setSelectedRow(selectedRow === rowData ? null : rowData);
   };
 
@@ -61,26 +62,26 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
       contactname: "Smith, John",
       cellphone: 179458399,
       workphone: 788437943,
-      email: "rajgarg@gmail.com",
+      email: "test1@gmail.com",
       preferred: "Cell Phone",
     },
     {
-      delegate: "PMS",
-      contacttype: "Care Team",
-      contactname: "Smith, John",
-      cellphone: 179458399,
-      workphone: 788437943,
-      email: "rajgarg@gmail.com",
-      preferred: "Cell Phone",
+      delegate: "Health Home",
+      contacttype: "Care Link",
+      contactname: "Tessa, Adam",
+      cellphone: 179458387,
+      workphone: 788437956,
+      email: "test2@gmail.com",
+      preferred: "Work phone",
     },
     {
       delegate: "PMS",
-      contacttype: "Care Team",
-      contactname: "Smith, John",
-      cellphone: 179458399,
-      workphone: 788437943,
-      email: "rajgarg@gmail.com",
-      preferred: "Cell Phone",
+      contacttype: "Delegated",
+      contactname: "Levi, mark",
+      cellphone: 179458367,
+      workphone: 788437964,
+      email: "test3@gmail.com",
+      preferred: "Work Phone",
     },
   ]);
   const columns = [
