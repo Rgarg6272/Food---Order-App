@@ -5,6 +5,10 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import MaterialTable from "material-table";
+import { Search } from "@material-ui/icons";
+import { Paper } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -82,26 +86,39 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
       email: "rajgarg@gmail.com",
       preferred: "Cell Phone",
     },
+    {
+      delegate: "PMS",
+      contacttype: "Care Team",
+      contactname: "Smith, John",
+      cellphone: 179458399,
+      workphone: 788437943,
+      email: "rajgarg@gmail.com",
+      preferred: "Cell Phone",
+    },
+    {
+      delegate: "PMS",
+      contacttype: "Care Team",
+      contactname: "Smith, John",
+      cellphone: 179458399,
+      workphone: 788437943,
+      email: "rajgarg@gmail.com",
+      preferred: "Cell Phone",
+    },
   ]);
   const columns = [
     {
       title: "Delegate",
       field: "delegate",
-      sorting: false,
-      filtering: false,
-      headerStyle: { color: "#fff" },
       align: "center",
     },
     {
       title: "Contact Type",
       field: "contacttype",
-      filterPlaceholder: "filter",
       align: "center",
     },
     {
       title: "Contact Name",
       field: "contactname",
-      align: "center",
       align: "center",
     },
     {
@@ -117,24 +134,14 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
     {
       title: "Email",
       field: "email",
-      filterPlaceholder: "filter",
       align: "center",
     },
     {
       title: "Preferred",
       field: "preferred",
-      filterPlaceholder: "filter",
       align: "center",
     },
   ];
-
-  const table = (
-    <>
-      <div>
-        <MaterialTable columns={columns} data={tableData} />
-      </div>
-    </>
-  );
 
   const body = (
     <div className={classes.paperDialog}>
@@ -149,11 +156,41 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
             <CloseIcon className={classes.closeIcon} onClick={handleClose} />
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs={12}>
-            {table}
-          </Grid>
-        </Grid>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          className={classes.modal}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogContent>
+            <div>
+              <Grid container className={classes.typoHeaderContainer}>
+                <Grid item xs={8}>
+                  <Typography className={classes.typoHeader}>
+                    Assign Delegated Contact
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} style={{ textAlign: "right" }}>
+                  <CloseIcon
+                    className={classes.closeIcon}
+                    onClick={handleClose}
+                  />
+                </Grid>
+              </Grid>
+              <Paper elevation={3} className={classes.contentPaper}>
+                <MaterialTable
+                  columns={columns}
+                  data={tableData}
+                  title=""
+                  options={{ search: false, pageSize: 3 }}
+                />
+              </Paper>
+            </div>
+          </DialogContent>
+        </Dialog>
       </>
     </div>
   );
