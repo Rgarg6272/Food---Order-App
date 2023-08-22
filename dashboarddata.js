@@ -5,7 +5,6 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import MaterialTable from "material-table";
-import { Search } from "@material-ui/icons";
 import { Button, Paper } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -22,19 +21,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
 
-  paperDialog: {
-    position: "absolute",
-    maxWidth: "55rem",
-    height: "250px",
-    maxHeight: "80vh",
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: "0px 30px 17px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-
   closeIcon: {
     position: "absolute",
     cursor: "pointer",
@@ -42,26 +28,6 @@ const useStyles = makeStyles((theme) => ({
     right: "25px",
   },
 
-  closeButton: {
-    "&:hover": {
-      background: "#14837B",
-    },
-    backgroundColor: "#14837B",
-    textTransform: "capitalize",
-    fontSize: "14px",
-    fontWeight: 700,
-    color: "#ffffff",
-    borderRadius: 0,
-    width: "28%",
-  },
-
-  closeButtonGrid: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    marginTop: "auto",
-    paddingTop: "1rem",
-  },
   typoHeaderContainer: {
     padding: "1rem 1rem 1rem 0rem",
   },
@@ -201,7 +167,7 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
                   textTransform: "capitalize",
                 }}
               >
-                Assign
+                Replace
               </Button>
             </Grid>
           </Grid>
