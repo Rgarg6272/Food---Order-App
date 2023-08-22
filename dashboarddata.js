@@ -8,6 +8,7 @@ import MaterialTable from "material-table";
 import { Button, Paper } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
+import Radio from "@material-ui/core/Radio";
 
 const useStyles = makeStyles((theme) => ({
   customToolbar: {
@@ -47,6 +48,12 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
     handleCloseDialog();
   };
 
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleRowSelection = (rowData) => {
+    setSelectedRow(selectedRow === rowData ? null : rowData);
+  };
+
   const [tableData, setTableData] = useState([
     {
       delegate: "PMS",
@@ -77,6 +84,16 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
     },
   ]);
   const columns = [
+    {
+      field: "radio",
+      title: "",
+      render: (rowData) => (
+        <Radio
+          checked={selectedRow === rowData}
+          onClick={() => handleRowSelection(rowData)}
+        />
+      ),
+    },
     {
       title: "Delegate",
       field: "delegate",
@@ -141,6 +158,9 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
                       data={tableData}
                       title=""
                       options={{ search: false, pageSize: 3 }}
+                      onSelectionChange={(rows) =>
+                        setSelectedRow(rows.length > 0 ? rows[0] : null)
+                      }
                     />
                   </div>
                 </Paper>
