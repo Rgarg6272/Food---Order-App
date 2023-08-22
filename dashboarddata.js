@@ -6,11 +6,16 @@ import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import MaterialTable from "material-table";
 import { Search } from "@material-ui/icons";
-import { Paper } from "@material-ui/core";
+import { Button, Paper } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 
 const useStyles = makeStyles((theme) => ({
+  customToolbar: {
+    "& .MTableToolbar-root-5": {
+      minHeight: "0px !important",
+    },
+  },
   modal: {
     display: "flex",
     alignItems: "center",
@@ -19,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
 
   paperDialog: {
     position: "absolute",
-    maxWidth: "50rem",
-    height: "230px",
+    maxWidth: "55rem",
+    height: "250px",
     maxHeight: "80vh",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
@@ -144,55 +149,65 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
   ];
 
   const body = (
-    <div className={classes.paperDialog}>
-      <>
-        <Grid container className={classes.typoHeaderContainer}>
-          <Grid item xs={8}>
-            <Typography className={classes.typoHeader}>
-              Assign Delegated Contact
-            </Typography>
-          </Grid>
-          <Grid item xs={4} style={{ textAlign: "right" }}>
-            <CloseIcon className={classes.closeIcon} onClick={handleClose} />
-          </Grid>
-        </Grid>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          className={classes.modal}
-          maxWidth="md"
-          fullWidth
-        >
-          <DialogContent>
-            <div>
-              <Grid container className={classes.typoHeaderContainer}>
-                <Grid item xs={8}>
-                  <Typography className={classes.typoHeader}>
-                    Assign Delegated Contact
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} style={{ textAlign: "right" }}>
-                  <CloseIcon
-                    className={classes.closeIcon}
-                    onClick={handleClose}
-                  />
-                </Grid>
+    <>
+      <Grid container>
+        <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+          <DialogContent style={{ paddingTop: 0 }}>
+            <Grid container className={classes.typoHeaderContainer}>
+              <Grid item xs={8}>
+                <Typography className={classes.typoHeader}>
+                  Assign Delegated Contact
+                </Typography>
               </Grid>
-              <Paper elevation={3} className={classes.contentPaper}>
-                <MaterialTable
-                  columns={columns}
-                  data={tableData}
-                  title=""
-                  options={{ search: false, pageSize: 3 }}
+              <Grid item xs={4} style={{ textAlign: "right" }}>
+                <CloseIcon
+                  className={classes.closeIcon}
+                  onClick={handleClose}
                 />
-              </Paper>
-            </div>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item xs={12}>
+                <Paper elevation={0} className={classes.contentPaper}>
+                  <div className={classes.customToolbar}>
+                    <MaterialTable
+                      columns={columns}
+                      data={tableData}
+                      title=""
+                      options={{ search: false, pageSize: 3 }}
+                    />
+                  </div>
+                </Paper>
+              </Grid>
+            </Grid>
           </DialogContent>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                marginRight: "30px",
+                paddingBottom: "4px",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{
+                  borderRadius: 0,
+                  height: "27px",
+                  textTransform: "capitalize",
+                }}
+              >
+                Assign
+              </Button>
+            </Grid>
+          </Grid>
         </Dialog>
-      </>
-    </div>
+      </Grid>
+    </>
   );
 
   return (
