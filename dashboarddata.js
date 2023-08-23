@@ -39,13 +39,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DelegatedDialog = ({ handleCloseDialog }) => {
+const DelegatedDialog = ({
+  handleCloseDialog,
+  handleReplaceClick,
+  dialogSelectedRow,
+}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
     setOpen(false);
     handleCloseDialog();
+  };
+
+  const handleReplace = () => {
+    // console.log("hello");
+    console.log("Dialog selected row: ", dialogSelectedRow);
+    if (dialogSelectedRow) {
+      handleReplaceClick(dialogSelectedRow);
+      handleClose();
+    }
   };
 
   const [selectedRow, setSelectedRow] = useState(null);
@@ -187,6 +200,7 @@ const DelegatedDialog = ({ handleCloseDialog }) => {
                   height: "27px",
                   textTransform: "capitalize",
                 }}
+                onClick={handleReplace}
               >
                 Replace
               </Button>
