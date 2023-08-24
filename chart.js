@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./App.css";
 import MaterialTable from "material-table";
 import Button from "@material-ui/core/Button";
+import { Grid } from "@material-ui/core";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import DelegatedDialog from "./component/DelegatedDialog";
+import AddIcon from "@material-ui/icons/Add";
 
 function App() {
   const [tableData, setTableData] = useState([
@@ -147,6 +149,11 @@ function App() {
   };
   return (
     <div className="App">
+      <Grid container>
+        <Grid item xs={12}>
+          <Button>Assign Contact</Button>
+        </Grid>
+      </Grid>
       <MaterialTable
         columns={columns}
         data={tableData}
@@ -166,6 +173,13 @@ function App() {
             },
           },
         ]}
+        editable={{
+          onRowAdd: (newRow) =>
+            new Promise((resolve, reject) => {
+              setTableData([...tableData, newRow]);
+              setTimeout(() => resolve(), 500);
+            }),
+        }}
         options={{
           sorting: true,
           search: false,
@@ -178,12 +192,12 @@ function App() {
           showFirstLastPageButtons: false,
           addRowPosition: "first",
           actionsColumnIndex: -1,
-          columnsButton: true,
           rowStyle: (data, index) =>
             index % 2 === 0 ? { background: "#f5f5f5" } : null,
           headerStyle: { background: "#f44336", color: "#fff" },
         }}
         title="Table"
+        icons={{ Add: () => <Button>Add</Button> }}
       />
       {dialogOpen && (
         <DelegatedDialog
