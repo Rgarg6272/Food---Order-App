@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import DelegatedDialog from "./component/DelegatedDialog";
-import AddIcon from "@material-ui/icons/Add";
 
 function App() {
   const [tableData, setTableData] = useState([
@@ -197,7 +196,24 @@ function App() {
           headerStyle: { background: "#f44336", color: "#fff" },
         }}
         title="Table"
-        icons={{ Add: () => <Button>Add</Button> }}
+        icons={{
+          Add: () => (
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{
+                borderRadius: 0,
+                textTransform: "capitalize",
+              }}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleDialog({});
+              }}
+            >
+              Assign Contact
+            </Button>
+          ),
+        }}
       />
       {dialogOpen && (
         <DelegatedDialog
