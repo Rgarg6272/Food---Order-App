@@ -60,11 +60,6 @@ const DelegatedDialog = ({
   const classes = useStyles();
   const [open, setOpen] = useState(true);
 
-  const handleClose = () => {
-    setOpen(false);
-    handleCloseDialog();
-  };
-
   const handleReplace = () => {
     // console.log("hello");
     console.log("Dialog selected row: ", dialogSelectedRow);
@@ -158,8 +153,16 @@ const DelegatedDialog = ({
     },
   ];
 
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+    handleCloseDialog();
+  };
+
   const handleOpenTableDialog = () => {
     console.log("Hey MF");
+    setSearchDialogOpen(true);
     handleClose();
   };
 
@@ -219,7 +222,12 @@ const DelegatedDialog = ({
   const body = (
     <>
       <Grid container>
-        <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+        <Dialog
+          open={open}
+          onClose={() => setSearchDialogOpen(false)}
+          maxWidth="lg"
+          fullWidth
+        >
           <DialogContent style={{ paddingTop: 0 }}>
             <Grid container className={classes.typoHeaderContainer}>
               <Grid item xs={8}>
