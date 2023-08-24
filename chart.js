@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import MaterialTable from "material-table";
 import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import DelegatedDialog from "./component/DelegatedDialog";
 
@@ -146,13 +145,9 @@ function App() {
     }
     console.log("updated table data: ", tableData);
   };
+
   return (
     <div className="App">
-      <Grid container>
-        <Grid item xs={12}>
-          <Button>Assign Contact</Button>
-        </Grid>
-      </Grid>
       <MaterialTable
         columns={columns}
         data={tableData}
