@@ -367,7 +367,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="simple-modal-title"
+                aria-labelledby="simple-modal-title" 
                 aria-describedby="simple-modal-description"
                 className={classes.modal}
             >
