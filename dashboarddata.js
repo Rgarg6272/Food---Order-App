@@ -1,26 +1,7 @@
-import { forwardRef } from "react";
 import React, { useEffect, useState } from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import MaterialTable, { MTableToolbar } from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import Check from "@material-ui/icons/Check";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Edit from "@material-ui/icons/Edit";
-import FilterList from "@material-ui/icons/FilterList";
-import FirstPage from "@material-ui/icons/FirstPage";
-import LastPage from "@material-ui/icons/LastPage";
-import Remove from "@material-ui/icons/Remove";
-import Search from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-import "jspdf-autotable";
-import { TablePagination, IconButton, Grid } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import { commonFontSizes } from "../../css/FontSizes";
 import { DelegatedContactData, AdDelegateContactData } from "../../../constants/memberData";
 import { memberDelegatedContactData } from "../../../constants/memberData";
 import { InputAdornment, TextField } from "@material-ui/core";
@@ -34,34 +15,8 @@ import AssignDeleTableDialog from "../../pages/DelegatedContacts/AssignDeleTable
 
 const drawerWidth = 200;
 
-const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => (
-        <ChevronRight style={{ color: "#A71930" }} {...props} ref={ref} />
-    )),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
 
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => (
-        <ChevronLeft {...props} ref={ref} />
-    )),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-};
-function RenderValue(props) {
-    return (
-        <div>{props.value === " " || props.value === null ? "-" : props.value}</div>
-    );
-}
+  
 const theme = createMuiTheme({
     overrides: {
         MuiToolbar: {
@@ -96,112 +51,6 @@ const theme = createMuiTheme({
 
 export const MemberDeleContactsTable = () => {
     const [tableData, setData] = useState(memberDelegatedContactData);
-    //const [claimsLoading, setLoading] = useState(loading);
-    const [data2, setData2] = useState([]);
-    const [snackOpen, setSnackOpen] = useState(false);
-    const [snackSev, setSnackSev] = useState("");
-    const [snackMsg, setSnackMsg] = useState("");
-    const tableRef = React.createRef();
-    const [showDialog, setshowDialog] = useState(false);
-    const [count, setCount] = useState(tableData && tableData.length > 0 ? tableData.length : 0);
-    const [memberInfo, setMemberInfo] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [addHeader, setAddHeader] = useState("");
-    const [addData, setAddData] = useState("");
-    const [flag, setFlag] = useState("");
-    const [rowId, setRowId] = useState("");
-    const classes = useStyles();
-    const classes1 = searchButtonStyles();
-
-    let nullObject = null;
-    let data1 = {};
-    let noData1 = "";
-
-    const history = useHistory();
-
-    const getPageSizeOptions = () => {
-        return [5, 10];
-    };
-
-    const AddNewLevel = (flag) => {
-        setAddData(AdDelegateContactData);
-        setFlag(flag);
-        setAddHeader("Add New Contact");
-        setDialogOpen(true);
-    }
-
-    const handleCloseDialog = (memberFormData, flag, RowId) => {
-        setDialogOpen(false);
-        if (flag === 'edit') {
-            if (memberFormData) {
-                const updatedData = tableData.map(item => {
-                    if (item.id === RowId) {
-                        const id = RowId;
-                        return { ...memberFormData, id }; //Replace row with new data and same id
-                    }
-                    return item;
-                });
-                //console.log('updatedData::', updatedData)
-                setData(updatedData);
-                setDialogOpen(false);
-                //console.log('tableData:', tableData);
-            } else {
-                setDialogOpen(false);
-            }
-        } else {
-            if (memberFormData) {
-                setData([...tableData, memberFormData]);
-                setDialogOpen(false);
-            } else {
-                setDialogOpen(false);
-            }
-        }
-    }
-
-    const replaceRowById = (rowData) => {
-        const newData =
-        {
-            Delegate: "new 1",
-            Contact_Type: "new 1",
-            Contact_Name: "new 1",
-            Cell_Phone: "new 1",
-            Work_Phone: "new 1",
-            Email: "new 1",
-            Preferred: "new 1",
-        };
-
-        const updatedData = tableData.map(item => {
-            if (item.id === rowData.id) {
-                const id = rowData.id;
-                return { ...newData, id }; //Replace row with new data and same id
-            }
-            return item;
-        });
-        setData(updatedData);
-    }
-
-    const EditContactRowById = (rowData, flag) => {
-        const updateMemberData = AdDelegateContactData.map((inputData) => {
-            setRowId(rowData.id);
-            let res = Object.values(rowData);
-            if (rowData.flag === 'Add') {
-                return {
-                    ...inputData,
-                    value: res[inputData.id - 1]
-                };
-            } else {
-                return {
-                    ...inputData,
-                    value: res[inputData.id]
-                };
-            }
-
-        })
-        setAddData(updateMemberData);
-        setFlag(flag);
-        setAddHeader("Add New Contact");
-        setDialogOpen(true);
-    }
 
     useEffect(() => {
         setCount(tableData && tableData.length > 0 ? tableData.length : 0);
@@ -343,133 +192,6 @@ export const MemberDeleContactsTable = () => {
                                 />,
                                 render: (rowData) => (
                                     <RenderValue value={rowData.SubscriberID} />
-                                ),
-                            },
-                            {
-                                title: "Jiva Member ID",
-                                field: "JivaMemberID",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{ height: "2rem" }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.JivaMemberID} />
-                                ),
-                            },
-                            {
-                                title: "Member First Name",
-                                field: "MemberFirstName",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{ height: "2rem", minWidth: 130,
-                                    maxWidth: 130, }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.MemberFirstName} />
-                                ),
-                            },
-                            {
-                                title: "Member Last Name",
-                                field: "MemberLastName",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{ height: "2rem", minWidth: 130,
-                                    maxWidth: 130 }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.MemberLastName} />
-                                ),
-                            },
-                            {
-                                title: "Delegate",
-                                field: "Delegate",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{ height: "2rem" }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.Delegate} />
                                 ),
                             },
                             {
@@ -632,38 +354,6 @@ export const MemberDeleContactsTable = () => {
                                 ),
                             },
                         ]}
-
-                        components={{
-                            Toolbar: (props) => (
-                                <Grid container style={{ height: "3.2rem" }}>
-                                    <Grid item xs={12} style={{ textAlign: "end", padding: "0.5rem" }}>
-                                        <Button className={classes1.searchbuttonEnable} style={{ textTransform: "none", width: "9rem", borderRadius: '0px', backgroundColor:"#217e76" }} onClick={handleDialog}
-                                            variant="contained"
-                                        >
-                                            Assign Contact
-                                        </Button>
-                                        <div style={{ width: "13rem" }}>
-                                            <MTableToolbar {...props} />
-                                        </div>
-                                    </Grid>
-                                </Grid>
-                            ),
-                            Pagination: (props) => (
-                                <div style={{ borderTop: "1px solid lightgrey" }}>
-                                    <TablePagination
-                                        {...props}
-                                        style={{
-                                            backgroundColor: "",
-                                            float: "right",
-                                            maxHeight: "2.8rem",
-                                            overflow: "hidden",
-                                            paddingBottom: "0.5rem"
-                                        }}
-                                        rowsPerPageOptions={getPageSizeOptions()}
-                                    />
-                                </div>
-                            ),
-                        }}
                     />
                     {assignDialogOpen && <AssingDeleDialog handleAssignCloseDialog={handleAssignCloseDialog} handleAddRow={handleAddRow}  dialogSelectedRow={selectedRow} />}
                     {assignDeleDialogOpen && <AssignDeleTableDialog/>}
