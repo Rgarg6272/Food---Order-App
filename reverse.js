@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
-import MaterialTable from "material-table";
 import { Button, Paper } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -14,6 +13,10 @@ import AlertDeleDialog from "./AlertDeleDialog";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { DelegatedContactData, AdDelegateContactData } from "../../../constants/memberData";
 import { commonFontSizes } from "../../css/FontSizes";
+import { TablePagination } from "@material-ui/core";
+import MaterialTable, { MTableToolbar } from "material-table";
+
+
 
 const theme = createMuiTheme({
     overrides: {
@@ -85,6 +88,13 @@ const useStyles = makeStyles((theme) => ({
 const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
     const classes = useStyles();
     const [tableData, setData] = useState(DelegatedContactData);
+    const [count, setCount] = useState(tableData && tableData.length > 0 ? tableData.length : 0);
+    useEffect(() => {
+        // setLoading(loading);
+        // setData(data);
+        setCount(tableData && tableData.length > 0 ? tableData.length : 0);
+      }, []);
+
 
     const tableStyle = {
         border: "1px solid lightgray",
@@ -94,7 +104,37 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
         border: "1px solid lightgray",
     }
 
+    const getPageSizeOptions = () => {
+        // console.log('count::', count)
+        return [5, 10];
+        // if (count <= 5) {
+        //   return [count];
+        // } else if (count <= 10) {
+        //   return [5, count];
+        // } else if (count <= 20) {
+        //   return [5, 10, count];
+        // } else {
+        //   return [5, 10, 20, count];
+        // }
+      };
+
     const columns = [
+        {
+            title: "",
+            render: rowData => (
+                <Radio checked={selectedRow === rowData}
+                onChange={() => handleRowSelection(rowData)}
+                />
+            ),
+            cellStyle: {
+                padding: "0",
+               // width: "1px",
+                textAlign: "center",
+                minWidth: 30,
+                maxWidth: 30,
+            },
+            align: 'start'
+        },
         {
             title: "Delegate",
             field: "Delegate",
@@ -106,7 +146,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 minWidth: 190,
                 maxWidth: 190,
             },
-            align: 'center'
+            align: 'start'
         },
         {
             title: "Contact Type",
@@ -117,7 +157,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 fontSize: commonFontSizes.bodyTwo + "rem",
                 fontWeight: 400,
             },
-            align: 'center'
+            align: 'start'
         },
         {
             title: "Contact Name",
@@ -128,7 +168,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 fontSize: commonFontSizes.bodyTwo + "rem",
                 fontWeight: 400
             },
-            align: 'center'
+            align: 'start'
         },
         {
             title: "Cell Phone",
@@ -139,7 +179,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 fontSize: commonFontSizes.bodyTwo + "rem",
                 fontWeight: 400
             },
-            align: 'center'
+            align: 'start'
         },
         {
             title: "Work Phone",
@@ -150,7 +190,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 fontSize: commonFontSizes.bodyTwo + "rem",
                 fontWeight: 400
             },
-            align: 'center'
+            align: 'start'
         },
         {
             title: "Email",
@@ -161,7 +201,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 fontSize: commonFontSizes.bodyTwo + "rem",
                 fontWeight: 400
             },
-            align: 'center'
+            align: 'start'
         },
         {
             title: "Preferred",
@@ -172,7 +212,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                 fontSize: commonFontSizes.bodyTwo + "rem",
                 fontWeight: 400
             },
-            align: 'center'
+            align: 'start'
         },
     ];
 
@@ -234,12 +274,12 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                         </Grid>
                         <Grid container>
                             <Grid item xs={12}>
-                            <div style={{position: 'relative', left: '1px'}}>
+                            <div style={{position: 'relative', left: '1px', bottom : '10px'}}>
                                         <label>
                                             Subscriber ID
                                         </label>
                                     </div>
-                                <form className={classes.root} noValidate autoComplete="off" style={{position: 'relative', left: '-5px'}}>
+                                <form className={classes.root} noValidate autoComplete="off" style={{position: 'relative', left: '-5px', bottom: '10px'}}>
                                     <TextField
                                         id="outlined-basic"
                                         variant="outlined"
@@ -273,6 +313,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                             <div className="tableContainer1" style={tableStyle}>
                                                 <MaterialTable
                                                     autoHeight={true}
+                                                    key={count}
                                                     data={tableData} 
                                                     columns={columns}
                                                     options={{
@@ -286,15 +327,15 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                                         overflowY: "hidden !important",                                             
                                                         padding: "dense",
                                                         filtering: false,
-                                                        searchFieldStyle: {
-                                                            padding: "0px 0px 0px 10px",
-                                                            margin: "0px 0 0 0 ",
-                                                            disableUnderline: true,
-                                                            border: "0.5px solid #A19D9D",
-                                                            height: "100%",
-                                                            width: "18rem",
-                                                            borderRadius: "4px"
-                                                        },
+                                                        // searchFieldStyle: {
+                                                        //     padding: "0px 0px 0px 10px",
+                                                        //     margin: "0px 0 0 0 ",
+                                                        //     disableUnderline: true,
+                                                        //     border: "0.5px solid #A19D9D",
+                                                        //     height: "100%",
+                                                        //     width: "18rem",
+                                                        //     borderRadius: "4px"
+                                                        // },
                                                         showTitle: false,
                                                         doubleHorizontalScroll: false,
                                                         headerStyle: {
@@ -304,16 +345,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                                             fontSize: commonFontSizes.bodyTwo + "rem",
                                                             color: "#2C2B2C",
                                                             border: "0px solid lightgrey",
-                                                            textAlign: "center"
-                                                        },
-                                                        filterRowStyle: {
-                                                            left: "0",
-                                                            position: "sticky",
-                                                            top: 43,
-                                                            background: "#fff",
-                                                            padding: "0.3em",
-                                                            width: "100%",
-                                                            zIndex: 1 
+                                                            textAlign: "start"
                                                         },
                                                         cellStyle: () => CellBorderStyle,
                                                         rowStyle: (row) => {
@@ -322,7 +354,36 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                                                 ? { backgroundColor: "#F5F5F5" }
                                                                 : { backgroundColor: "#fff" };
                                                         },
+                                                        // pageSize: count < 10 ? parseInt(count) + 1 : 10,
+                                                        // pageSizeOptions: [
+                                                        //   5,
+                                                        //   10,
+                                                        //   20,
+                                                        //   { value: count > 0 ? count : 1, label: "All" },
+                                                        // ],
                                                     }}
+                                                    // components={{
+                                                    //     Toolbar: (props) => (
+                                                    //       <div>
+                                                    //         <MTableToolbar {...props} />
+                                                    //       </div>
+                                                    //     ),
+                                                    //     Pagination: (props) => (
+                                                    //       <div style={{ borderTop: "1px solid lightgrey" }}>
+                                                    //         <TablePagination
+                                                    //           {...props}
+                                                    //           style={{
+                                                    //             backgroundColor: "",
+                                                    //             float: "right",
+                                                    //             maxHeight: "2.6rem",
+                                                    //             overflow: "hidden",
+                                                    //             paddingBottom:"0.5rem"
+                                                    //           }}
+                                                    //           rowsPerPageOptions={getPageSizeOptions()}
+                                                    //         />
+                                                    //       </div>
+                                                    //     ),
+                                                    //   }}
                                                 />
                                             </div>
                                         </MuiThemeProvider>
@@ -367,7 +428,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="simple-modal-title" 
+                aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 className={classes.modal}
             >
