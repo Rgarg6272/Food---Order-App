@@ -14,31 +14,22 @@ import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
 import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-// import { useHistory } from "react-router-dom";
 import "jspdf-autotable";
 import { TablePagination, IconButton, Grid } from "@material-ui/core";
-// import ClaimDetails from "../ClaimDetail/ClaimsDetails";
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import { CsvBuilder } from "filefy";
-import jsPDF from "jspdf";
 import { commonFontSizes } from "../../css/FontSizes";
 import { DelegatedContactData, AdDelegateContactData } from "../../../constants/memberData";
 import { memberDelegatedContactData } from "../../../constants/memberData";
-import EditIcon from '@material-ui/icons/Edit';
-import BlockIcon from '@material-ui/icons/Block';
 import { InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import { searchButtonStyles } from "../../css/SearchButtonStyles";
 import { useStyles } from "../../css/MemberDetails";
-// import { setFlagsFromString } from "v8";
-import AddNewCareDialog from "../../common/AddNewCareDialog";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import AssingDeleDialog from "../../pages/DelegatedContacts/AssignDeleDialog";
+import AssignDeleTableDialog from "../../pages/DelegatedContacts/AssignDeleTableDialog";
 
 
 const drawerWidth = 200;
@@ -128,50 +119,11 @@ export const MemberDeleContactsTable = () => {
 
     const history = useHistory();
 
-    const handleSnackClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        setSnackOpen(false);
-    };
     const getPageSizeOptions = () => {
-        // console.log('count::', count)
         return [5, 10];
-        // if (count <= 5) {
-        //   return [count];
-        // } else if (count <= 10) {
-        //   return [5, count];
-        // } else if (count <= 20) {
-        //   return [5, 10, count];
-        // } else {
-        //   return [5, 10, 20, count];
-        // }
     };
-
-    // const handleClick = () => {
-    //   handleOpenPatientDetails();
-    // };
-    // const handlePanelOpen = (rowData) => {
-    //   setData2(rowData);
-    //   handleTableData(rowData);
-    //   const claimsDetails = {
-    //     rowData: rowData,
-    //     showClaimsDetials: true,
-    //   };
-    //   localStorage.setItem("claimDetails", JSON.stringify(claimsDetails));
-    //   OpenClaimDetails();
-    // };
-    // const handlePanel = () => {
-    //   setshowDialog(false);
-    // };
-
-    // const handleClick = (rowData) => {
-    //   history.push('/MainMemberInfo')
-    // };
 
     const AddNewLevel = (flag) => {
-        //console.log('AdDelegateContactData::',AdDelegateContactData)
         setAddData(AdDelegateContactData);
         setFlag(flag);
         setAddHeader("Add New Contact");
@@ -180,11 +132,9 @@ export const MemberDeleContactsTable = () => {
 
     const handleCloseDialog = (memberFormData, flag, RowId) => {
         setDialogOpen(false);
-        //console.log("getmemberFormData::", memberFormData, '  ', flag,' ',RowId,' ',tableData );
         if (flag === 'edit') {
             if (memberFormData) {
                 const updatedData = tableData.map(item => {
-                    //console.log('id:;',item.id,' ',RowId)
                     if (item.id === RowId) {
                         const id = RowId;
                         return { ...memberFormData, id }; //Replace row with new data and same id
@@ -202,7 +152,6 @@ export const MemberDeleContactsTable = () => {
             if (memberFormData) {
                 setData([...tableData, memberFormData]);
                 setDialogOpen(false);
-                //console.log('tableData:', tableData);
             } else {
                 setDialogOpen(false);
             }
@@ -210,7 +159,6 @@ export const MemberDeleContactsTable = () => {
     }
 
     const replaceRowById = (rowData) => {
-        //console.log('rowData::', rowData.id);
         const newData =
         {
             Delegate: "new 1",
@@ -227,17 +175,13 @@ export const MemberDeleContactsTable = () => {
                 const id = rowData.id;
                 return { ...newData, id }; //Replace row with new data and same id
             }
-            //console.log('item::', item)
             return item;
         });
-        //console.log('updatedData::', updatedData)
         setData(updatedData);
-        //console.log('tableData::', tableData)
     }
 
     const EditContactRowById = (rowData, flag) => {
         const updateMemberData = AdDelegateContactData.map((inputData) => {
-            //console.log('date::', rowData);
             setRowId(rowData.id);
             let res = Object.values(rowData);
             if (rowData.flag === 'Add') {
@@ -253,7 +197,6 @@ export const MemberDeleContactsTable = () => {
             }
 
         })
-        //console.log('updateMemberData::', updateMemberData)
         setAddData(updateMemberData);
         setFlag(flag);
         setAddHeader("Add New Contact");
@@ -261,16 +204,19 @@ export const MemberDeleContactsTable = () => {
     }
 
     useEffect(() => {
-        // setLoading(loading);
-        // setData(data);
         setCount(tableData && tableData.length > 0 ? tableData.length : 0);
     }, []);
 
     const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+    const [assignDeleDialogOpen, setAssignDeleDialogOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
 
     const handleDialog = () => {
         setAssignDialogOpen(true);
+    }
+
+    const handleDeleDialog = () => {
+        setAssignDeleDialogOpen(true);
     }
 
     const handleAssignCloseDialog = () => {
@@ -281,8 +227,6 @@ export const MemberDeleContactsTable = () => {
         console.log("which row", rowData);
         setData([...tableData, rowData]);
       };
-
-      
 
     return (
         <div>
@@ -299,32 +243,22 @@ export const MemberDeleContactsTable = () => {
                                         style={{
                                             color: "#A71930",
                                             fontWeight: "bold",
-                                            // fontSize: commonFontSizes.bodyTwo * accessibilityFontSize + "rem",
                                         }}
-                                    >
-                                        {" "}
-                                        {/* {noData}{" "} */}
+                                    >  
                                     </div>
                                 ),
                             },
                         }}
-                        // onRowClick={(event, rowData, togglePanel) =>
-                        //   handleClick(rowData)
-                        // }
                         autoHeight={true}
                         icons={tableIcons}
                         data={tableData}
-                        // loading={claimsLoading}
-                        // isLoading={claimsLoading}
                         tableRef={tableRef}
                         options={{
                             detailPanelType: "single",
                             selection: false,
                             maxBodyHeight: "45vh",
                             overflowY: "hidden !important",
-                            // exportButton: true,
                             padding: "dense",
-                            // pageSize: 10,
                             filtering: true,
                             search: false,
                             pageSize: count < 10 ? parseInt(count) + 1 : 10,
@@ -353,7 +287,6 @@ export const MemberDeleContactsTable = () => {
                                 fontSize: commonFontSizes.bodyTwo + "rem",
                                 color: "#2C2B2C",
                                 borderTop: "0.0625em solid lightgray",
-                                // height:"45px"
                             },
                             filterRowStyle: {
                                 left: "0",
@@ -362,7 +295,7 @@ export const MemberDeleContactsTable = () => {
                                 background: "#fff",
                                 padding: "0.3em",
                                 width: "100%",
-                                zIndex: 1 /* optionally */,
+                                zIndex: 1,
                             },
                             cellStyle: {
                                 whiteSpace: "nowrap",
@@ -405,11 +338,9 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
-
                                 render: (rowData) => (
                                     <RenderValue value={rowData.SubscriberID} />
                                 ),
@@ -438,11 +369,9 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
-
                                 render: (rowData) => (
                                     <RenderValue value={rowData.JivaMemberID} />
                                 ),
@@ -472,11 +401,9 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
-
                                 render: (rowData) => (
                                     <RenderValue value={rowData.MemberFirstName} />
                                 ),
@@ -506,22 +433,18 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
-
                                 render: (rowData) => (
                                     <RenderValue value={rowData.MemberLastName} />
                                 ),
                             },
-
                             {
                                 title: "Delegate",
                                 field: "Delegate",
                                 filtering: true,
                                 cellStyle: {
-                                    // textDecoration: "underline",
                                     color: "#555151",
                                     fontSize: commonFontSizes.bodyTwo + "rem",
                                     fontWeight: 400,
@@ -541,7 +464,6 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
@@ -575,7 +497,6 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
@@ -609,7 +530,6 @@ export const MemberDeleContactsTable = () => {
                                         )
                                     }}
                                     onChange={(event) => {
-                                        //console.log(event.target.value)
                                         props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
                                     }}
                                 />,
@@ -695,7 +615,7 @@ export const MemberDeleContactsTable = () => {
                                             style={{ padding: "0px 6px 0px 2px" }}
                                             aria-label="edit"
                                         >
-                                            <Button style={{ textTransform: 'capitalize', fontWeight: "bold", color: "#A71930" }}>Replace</Button>
+                                            <Button style={{ textTransform: 'capitalize', fontWeight: "bold", color: "#A71930" }} onClick={handleDeleDialog}>Replace</Button>
                                         </IconButton>
                                         <span>|</span>
                                         <IconButton
@@ -745,13 +665,10 @@ export const MemberDeleContactsTable = () => {
                             ),
                         }}
                     />
-                    {/* {dialogOpen && (
-                        <AddNewCareDialog handleCloseDialog={handleCloseDialog} tableDataId={tableData.length} addData={addData} addHeader={addHeader} flag={flag} rowId={rowId} />
-                    )} */}
                     {assignDialogOpen && <AssingDeleDialog handleAssignCloseDialog={handleAssignCloseDialog} handleAddRow={handleAddRow}  dialogSelectedRow={selectedRow} />}
+                    {assignDeleDialogOpen && <AssignDeleTableDialog/>}
                 </div>
             </MuiThemeProvider>
-
         </div>
     );
 };
