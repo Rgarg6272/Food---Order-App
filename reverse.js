@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -15,6 +15,7 @@ import { DelegatedContactData, AdDelegateContactData } from "../../../constants/
 import { commonFontSizes } from "../../css/FontSizes";
 import { TablePagination } from "@material-ui/core";
 import MaterialTable, { MTableToolbar } from "material-table";
+//import { table } from "console";
 
 
 
@@ -52,6 +53,9 @@ const theme = createMuiTheme({
 
 
 const useStyles = makeStyles((theme) => ({
+    borderedRow: {
+        borderBottom: "1px solid lightgray",
+    },
     root: {
         "& > *": {
             margin: "5px",
@@ -89,11 +93,12 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
     const classes = useStyles();
     const [tableData, setData] = useState(DelegatedContactData);
     const [count, setCount] = useState(tableData && tableData.length > 0 ? tableData.length : 0);
-    useEffect(() => {
-        // setLoading(loading);
-        // setData(data);
-        setCount(tableData && tableData.length > 0 ? tableData.length : 0);
-      }, []);
+    // useEffect(() => {
+    //     // setLoading(loading);
+    //     // setData(data);
+    //     setCount(tableData && tableData.length > 0 ? tableData.length : 0);
+    //   }, []);
+
 
 
     const tableStyle = {
@@ -118,12 +123,23 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
         // }
       };
 
+    const CustomRadio = ({isChecked, isEven, onSelect}) => {
+        return (
+            <Radio checked={isChecked} onClick={onSelect} style={{color: isEven ? "blue" : "red"}}/>
+        );
+    };
+
     const columns = [
         {
             title: "",
+            // render: rowData => (
+            //     <Radio checked={selectedRow === rowData}
+            //     onChange={() => handleRowSelection(rowData)}
+            //     />
+            // ),
             render: rowData => (
-                <Radio checked={selectedRow === rowData}
-                onChange={() => handleRowSelection(rowData)}
+                <CustomRadio isChecked={selectedRow === rowData} isEven={rowData.tableData.id % 2 === 0}
+                onSelect={() => handleRowSelection(rowData)}
                 />
             ),
             cellStyle: {
@@ -210,7 +226,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
             cellStyle: {
                 color: "#555151",
                 fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400
+                fontWeight: 400,
             },
             align: 'start'
         },
@@ -221,9 +237,18 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
     const [open, setOpen] = useState(true);
     const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 
+    useEffect(() => {
+        if(tableData.length > 0) {
+            setSelectedRow(tableData[0]);
+        }
+    }, [tableData]);
+
+    
+
     const handleRowSelection = (rowData) => {
         console.log("selected row data", rowData);
-        setSelectedRow(selectedRow === rowData ? null : rowData);
+        //setSelectedRow(selectedRow === rowData ? null : rowData);
+        setSelectedRow(rowData);
     };
 
     const handleClose = () => {
@@ -258,7 +283,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                     maxWidth="lg"
                     fullWidth
                 >
-                    <DialogContent style={{ paddingTop: 0, paddingBottom: '25px' }}>
+                    <DialogContent style={{ paddingTop: 0, paddingBottom: '30px' }}>
                         <Grid container className={classes.typoHeaderContainer}>
                             <Grid item xs={8}>
                                 <Typography className={classes.typoHeader}>
@@ -327,15 +352,6 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                                         overflowY: "hidden !important",                                             
                                                         padding: "dense",
                                                         filtering: false,
-                                                        // searchFieldStyle: {
-                                                        //     padding: "0px 0px 0px 10px",
-                                                        //     margin: "0px 0 0 0 ",
-                                                        //     disableUnderline: true,
-                                                        //     border: "0.5px solid #A19D9D",
-                                                        //     height: "100%",
-                                                        //     width: "18rem",
-                                                        //     borderRadius: "4px"
-                                                        // },
                                                         showTitle: false,
                                                         doubleHorizontalScroll: false,
                                                         headerStyle: {
@@ -350,9 +366,11 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                                         cellStyle: () => CellBorderStyle,
                                                         rowStyle: (row) => {
                                                             const id = row.tableData.id;
-                                                            return id % 2 === 0
-                                                                ? { backgroundColor: "#F5F5F5" }
-                                                                : { backgroundColor: "#fff" };
+                                                            return {
+                                                                backgroundColor: id%2 === 0 ? "#F5F5F5" : "#fff",
+                                                                borderBottom: "1px solid lightgray",
+                                                                borderTop: id === 0 ? "1px solid lightgray" : "none",
+                                                            }
                                                         },
                                                         // pageSize: count < 10 ? parseInt(count) + 1 : 10,
                                                         // pageSizeOptions: [
@@ -399,9 +417,9 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                             style={{
                                 display: "flex",
                                 justifyContent: "end",
-                                marginRight: "30px",
+                                marginRight: "25px",
                                 position: 'relative',
-                                bottom: '10px'
+                                bottom: '17px'
                             }}
                         >
                             <Button
@@ -409,7 +427,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                 color="secondary"
                                 style={{
                                     borderRadius: 0,
-                                    height: "27px",
+                                    height: "30px",
                                     textTransform: "capitalize",
                                     backgroundColor: '#217e76'
                                 }}
