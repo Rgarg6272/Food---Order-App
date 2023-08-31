@@ -15,32 +15,8 @@ Chart.pluginService.register({
     }
 });
 
-// chart1
-var data = {
-    labels: ["Red", "Blue"],
-    datasets: [{
-        data: [50, 50],
-        backgroundColor: ["#FF6384", "#36A2EB"],
-        hoverBackgroundColor: ["#FF6384", "#36A2EB"]
-    }]
-};
-var promisedDeliveryChart = new Chart(document.getElementById('myChart1'), {
-    type: 'doughnut',
-    data: data,
-    options: {
-        elements: {
-            center: {
-                text: '50%'  //set as you wish
-            }
-        },
-        cutoutPercentage: 75,
-        legend: {
-            display: false
-        }
-    }
-});
 
-// chart2
+// chart1
 var data = {
     labels: ["Red", "Blue"],
     datasets: [{
@@ -67,7 +43,6 @@ var promisedDeliveryChart = new Chart(document.getElementById('myChart2'), {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <table>
     <tr>
-        <td><canvas id="myChart1" width="150" height="150"></canvas></td>
         <td><canvas id="myChart2" width="150" height="150"></canvas></td>
     </tr>
 <table>
