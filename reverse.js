@@ -94,11 +94,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
     const classes = useStyles();
     const [tableData, setData] = useState(DelegatedContactData);
     const [count, setCount] = useState(tableData && tableData.length > 0 ? tableData.length : 0);
-    // useEffect(() => {
-    //     // setLoading(loading);
-    //     // setData(data);
-    //     setCount(tableData && tableData.length > 0 ? tableData.length : 0);
-    //   }, []);
+   
 
 
 
@@ -113,15 +109,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
     const getPageSizeOptions = () => {
         // console.log('count::', count)
         return [5, 10];
-        // if (count <= 5) {
-        //   return [count];
-        // } else if (count <= 10) {
-        //   return [5, count];
-        // } else if (count <= 20) {
-        //   return [5, 10, count];
-        // } else {
-        //   return [5, 10, 20, count];
-        // }
+        
       };
 
     const CustomRadio = ({isChecked, isEven, onSelect}) => {
@@ -133,11 +121,6 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
     const columns = [
         {
             title: "",
-            // render: rowData => (
-            //     <Radio checked={selectedRow === rowData}
-            //     onChange={() => handleRowSelection(rowData)}
-            //     />
-            // ),
             render: rowData => (
                 <CustomRadio isChecked={selectedRow === rowData} isEven={rowData.tableData.id % 2 === 0}
                 onSelect={() => handleRowSelection(rowData)}
@@ -198,39 +181,6 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
             },
             align: 'start'
         },
-        {
-            title: "Work Phone",
-            field: "Work_Phone",
-            filtering: false,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400
-            },
-            align: 'start'
-        },
-        {
-            title: "Email",
-            field: "Email",
-            filtering: false,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400
-            },
-            align: 'start'
-        },
-        {
-            title: "Preferred",
-            field: "Preferred",
-            filtering: false,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400,
-            },
-            align: 'start'
-        },
     ];
 
 
@@ -243,50 +193,22 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
             setSelectedRow(tableData[0]);
         }
     }, [tableData]);
-
-    
-
     const handleRowSelection = (rowData) => {
         console.log("selected row data", rowData);
         //setSelectedRow(selectedRow === rowData ? null : rowData);
         setSelectedRow(rowData);
     };
-
     const handleClose = () => {
         setOpen(false);
         handleDeleTableClose()
     };
-
-    // const handleAssign = () => {
-    //   if (selectedRow) {
-    //     setOpen(false);
-    //     setSearchDialogOpen(true);
-
-    //     handleAddRow(selectedRow);
-    //   }
-    // };
-
     const handleAssign = () => {
         setOpen(false);
         setSearchDialogOpen(true);
-
-        // if(selectedRow) {
-        //     const newRow = {...selectedRow};
-        //     const missingColumns = mainTableColumns
-        //          .filter(column => !newRow[column.field])
-        //          .map(column => column.field);
-        //     missingColumns.forEach(column => {
-        //         newRow[column] = "-";
-        //     });
-        //     handleAddRow(newRow);
-
-        // }
     };
-
     const handleAlertDeleClose = () => {
         setSearchDialogOpen(false);
     }
-
     const Replacebody = (
         <>
          <Grid container>
@@ -391,7 +313,6 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
             </Grid>
         </>
     );
-
     const Assignbody = (
         <>
             <Grid container>
@@ -490,36 +411,7 @@ const AssignDeleTableDialog = ({ handleDeleTableClose, handleAddRow }) => {
                                                                 borderTop: id === 0 ? "1px solid lightgray" : "none",
                                                             }
                                                         },
-                                                        // pageSize: count < 10 ? parseInt(count) + 1 : 10,
-                                                        // pageSizeOptions: [
-                                                        //   5,
-                                                        //   10,
-                                                        //   20,
-                                                        //   { value: count > 0 ? count : 1, label: "All" },
-                                                        // ],
                                                     }}
-                                                    // components={{
-                                                    //     Toolbar: (props) => (
-                                                    //       <div>
-                                                    //         <MTableToolbar {...props} />
-                                                    //       </div>
-                                                    //     ),
-                                                    //     Pagination: (props) => (
-                                                    //       <div style={{ borderTop: "1px solid lightgrey" }}>
-                                                    //         <TablePagination
-                                                    //           {...props}
-                                                    //           style={{
-                                                    //             backgroundColor: "",
-                                                    //             float: "right",
-                                                    //             maxHeight: "2.6rem",
-                                                    //             overflow: "hidden",
-                                                    //             paddingBottom:"0.5rem"
-                                                    //           }}
-                                                    //           rowsPerPageOptions={getPageSizeOptions()}
-                                                    //         />
-                                                    //       </div>
-                                                    //     ),
-                                                    //   }}
                                                 />
                                             </div>
                                         </MuiThemeProvider>
