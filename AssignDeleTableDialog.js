@@ -188,38 +188,6 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => 
                                                     key={count}
                                                     data={tableData}
                                                     columns={columns}
-                                                    options={{
-                                                        paging: false,
-                                                        search: false,
-                                                        toolbar: false,
-                                                        sorting: false,
-                                                        detailPanelType: "single",
-                                                        selection: false,
-                                                        maxBodyHeight: "40vh",
-                                                        overflowY: "hidden !important",
-                                                        padding: "dense",
-                                                        filtering: false,
-                                                        showTitle: false,
-                                                        doubleHorizontalScroll: false,
-                                                        headerStyle: {
-                                                            whiteSpace: "nowrap",
-                                                            position: "sticky",
-                                                            fontWeight: 700,
-                                                            fontSize: commonFontSizes.bodyTwo + "rem",
-                                                            color: "#2C2B2C",
-                                                            border: "0px solid lightgrey",
-                                                            textAlign: "start"
-                                                        },
-                                                        cellStyle: () => CellBorderStyle,
-                                                        rowStyle: (row) => {
-                                                            const id = row.tableData.id;
-                                                            return {
-                                                                backgroundColor: id % 2 === 0 ? "#F5F5F5" : "#fff",
-                                                                borderBottom: "1px solid lightgray",
-                                                                borderTop: id === 0 ? "1px solid lightgray" : "none",
-                                                            }
-                                                        },
-                                                    }}
                                                 />
                                             </div>
                                         </MuiThemeProvider>
