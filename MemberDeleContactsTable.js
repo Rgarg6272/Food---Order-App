@@ -346,7 +346,7 @@ export const MemberDeleContactsTable = () => {
                                         </IconButton>
                                     </div>
                                 ),
-                            },
+                            }, 
                         ]}
                     />
                     {assignDialogOpen && <AssingDeleDialog handleAssignCloseDialog={handleAssignCloseDialog} handleAddRow={handleAddRow} dialogSelectedRow={selectedRow} />}
