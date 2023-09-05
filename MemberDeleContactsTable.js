@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import React, { useEffect, useState } from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import MaterialTable, { MTableToolbar } from "material-table";
+import "jspdf-autotable";
 import { TablePagination, IconButton, Grid, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -16,10 +17,13 @@ import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import AssingDeleDialog from "../../pages/DelegatedContacts/AssignDeleDialog";
 import AssignDeleTableDialog from "../../pages/DelegatedContacts/AssignDeleTableDialog";
 
-const drawerWidth = 200;
-
 export const MemberDeleContactsTable = () => {
+    const spanStyle = {
+        fontFamily: "Material Symbols Outlined, sans-serif",
+        fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24"
+    }
     const [tableData, setData] = useState(memberDelegatedContactData);
+    //const [claimsLoading, setLoading] = useState(loading);
     const [data2, setData2] = useState([]);
     const [snackOpen, setSnackOpen] = useState(false);
     const [snackSev, setSnackSev] = useState("");
@@ -36,23 +40,6 @@ export const MemberDeleContactsTable = () => {
     const classes = useStyles();
     const classes1 = searchButtonStyles();
 
-    let nullObject = null;
-    let data1 = {};
-    let noData1 = "";
-
-    const history = useHistory();
-
-    const getPageSizeOptions = () => {
-        return [5, 10];
-    };
-
-    const AddNewLevel = (flag) => {
-        setAddData(AdDelegateContactData);
-        setFlag(flag);
-        setAddHeader("Add New Contact");
-        setDialogOpen(true);
-    }
-
     const handleCloseDialog = (memberFormData, flag, RowId) => {
         setDialogOpen(false);
         if (flag === 'edit') {
@@ -64,8 +51,10 @@ export const MemberDeleContactsTable = () => {
                     }
                     return item;
                 });
+                //console.log('updatedData::', updatedData)
                 setData(updatedData);
                 setDialogOpen(false);
+                //console.log('tableData:', tableData);
             } else {
                 setDialogOpen(false);
             }
@@ -78,10 +67,6 @@ export const MemberDeleContactsTable = () => {
             }
         }
     }
-    useEffect(() => {
-        setCount(tableData && tableData.length > 0 ? tableData.length : 0);
-    }, []);
-
     const [assignDialogOpen, setAssignDialogOpen] = useState(false);
     const [assignDeleDialogOpen, setAssignDeleDialogOpen] = useState(false);
     const [showAssignDialog, setShowAssignDialog] = useState(false);
@@ -91,8 +76,8 @@ export const MemberDeleContactsTable = () => {
     const handleDialog = () => {
         setAssignDialogOpen(true);
     }
-
-    const handleDeleDialog = () => {
+    const handleOpenDialog = (rowData) => {
+        setSelectedRow(rowData);
         setAssignDeleDialogOpen(true);
     }
 
@@ -105,6 +90,20 @@ export const MemberDeleContactsTable = () => {
         setData([...tableData, rowData]);
     };
 
+    // Replace logic
+    const handleReplaceRow = (rowData) => {
+        //Replace the selected row in your tableData state with the rowData from the popup table
+        const updatedTableData = tableData.map((item) => {
+            if (item.id === rowData.id) {
+                return rowData;
+            } else {
+                return item;
+            }
+        });
+        setData(updatedTableData);
+        setAssignDeleDialogOpen(false);
+    }
+
     return (
         <div>
             <MuiThemeProvider theme={theme}>
@@ -113,142 +112,20 @@ export const MemberDeleContactsTable = () => {
                         key={count}
                         title="Claims"
                         class="input"
-                        autoHeight={true}
-                        icons={tableIcons}
-                        data={tableData}
-                        tableRef={tableRef}
+                        localization={{
+                            body: {
+                                emptyDataSourceMessage: (
+                                    <div
+                                        style={{
+                                            color: "#A71930",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                    </div>
+                                ),
+                            },
+                        }}
                         columns={[
-                            {
-                                title: "Subscriber ID",
-                                field: "SubscriberID",
-                                filtering: true,
-                                cellStyle: {
-                                    // textDecoration: "underline",
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{ height: "2rem" }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end" >
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.SubscriberID} />
-                                ),
-                            },
-                            {
-                                title: "Jiva Member ID",
-                                field: "JivaMemberID",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{ height: "2rem" }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.JivaMemberID} />
-                                ),
-                            },
-                            {
-                                title: "Member First Name",
-                                field: "MemberFirstName",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{
-                                        height: "2rem", minWidth: 130,
-                                        maxWidth: 130,
-                                    }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.MemberFirstName} />
-                                ),
-                            },
-                            {
-                                title: "Member Last Name",
-                                field: "MemberLastName",
-                                filtering: true,
-                                cellStyle: {
-                                    color: "#555151",
-                                    fontSize: commonFontSizes.bodyTwo + "rem",
-                                    fontWeight: 400,
-                                    minWidth: 160,
-                                    maxWidth: 160,
-                                },
-                                filterComponent: (props) => <TextField
-                                    style={{
-                                        height: "2rem", minWidth: 130,
-                                        maxWidth: 130
-                                    }}
-                                    type="search"
-                                    placeholder='Search'
-                                    variant="outlined"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    onChange={(event) => {
-                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
-                                    }}
-                                />,
-                                render: (rowData) => (
-                                    <RenderValue value={rowData.MemberLastName} />
-                                ),
-                            },
                             {
                                 title: "Delegate",
                                 field: "Delegate",
@@ -317,6 +194,101 @@ export const MemberDeleContactsTable = () => {
                                 ),
                             },
                             {
+                                title: "Contact Name",
+                                field: "Contact_Name",
+                                filtering: true,
+                                cellStyle: {
+                                    color: "#555151",
+                                    fontSize: commonFontSizes.bodyTwo + "rem",
+                                    fontWeight: 400,
+                                    minWidth: 160,
+                                    maxWidth: 160,
+                                },
+                                filterComponent: (props) => <TextField
+                                    style={{
+                                        height: "2rem", minWidth: 130,
+                                        maxWidth: 130,
+                                    }}
+                                    type="search"
+                                    placeholder='Search'
+                                    variant="outlined"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <SearchIcon />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                    onChange={(event) => {
+                                        props.onFilterChanged(props.columnDef.tableData.id, event.target.value);
+                                    }}
+                                />,
+
+                                render: (rowData) => (
+                                    <RenderValue value={rowData.Contact_Name} />
+                                ),
+                            },
+                            {
+                                title: "Cell Phone",
+                                field: "Cell_Phone",
+                                filtering: false,
+                                cellStyle: {
+                                    color: "#555151",
+                                    fontSize: commonFontSizes.bodyTwo + "rem",
+                                    fontWeight: 400,
+                                    minWidth: 140,
+                                    maxWidth: 140,
+                                },
+                                render: (rowData) => (
+                                    <RenderValue value={rowData.Cell_Phone} />
+                                ),
+                            },
+                            {
+                                title: "Work Phone",
+                                field: "Work_Phone",
+                                filtering: false,
+                                cellStyle: {
+                                    color: "#555151",
+                                    fontSize: commonFontSizes.bodyTwo + "rem",
+                                    fontWeight: 400,
+                                    minWidth: 140,
+                                    maxWidth: 140,
+                                },
+                                render: (rowData) => (
+                                    <RenderValue value={rowData.Work_Phone} />
+                                ),
+                            },
+                            {
+                                title: "Email",
+                                field: "Email",
+                                filtering: false,
+                                cellStyle: {
+                                    color: "#555151",
+                                    fontSize: commonFontSizes.bodyTwo + "rem",
+                                    fontWeight: 400,
+                                    minWidth: 140,
+                                    maxWidth: 140,
+                                },
+                                render: (rowData) => (
+                                    <RenderValue value={rowData.Email} />
+                                ),
+                            },
+                            {
+                                title: "Preferred",
+                                field: "Preferred",
+                                filtering: false,
+                                cellStyle: {
+                                    color: "#555151",
+                                    fontSize: commonFontSizes.bodyTwo + "rem",
+                                    fontWeight: 400,
+                                    minWidth: 140,
+                                    maxWidth: 140,
+                                },
+                                render: (rowData) => (
+                                    <RenderValue value={rowData.Preferred} />
+                                ),
+                            },
+                            {
                                 title: "Action",
                                 field: "Action",
                                 filtering: false,
@@ -333,7 +305,7 @@ export const MemberDeleContactsTable = () => {
                                             style={{ padding: "0px 6px 0px 2px" }}
                                             aria-label="edit"
                                         >
-                                            <Button style={{ textTransform: 'capitalize', fontWeight: "bold", color: "#A71930" }} onClick={handleDeleDialog}>Replace</Button>
+                                            <Button style={{ textTransform: 'capitalize', fontWeight: "bold", color: "#A71930" }} onClick={() => handleOpenDialog(rowData)}>Replace</Button>
                                         </IconButton>
                                         <span>|</span>
                                         <IconButton
@@ -346,12 +318,29 @@ export const MemberDeleContactsTable = () => {
                                         </IconButton>
                                     </div>
                                 ),
-                            }, 
+                            },
                         ]}
+
+                        components={{
+                            Toolbar: (props) => (
+                                <Grid container style={{ height: "3.2rem" }}>
+                                    <Grid item xs={12} style={{ textAlign: "end", padding: "0.5rem" }}>
+                                        <Button className={classes1.searchbuttonEnable} style={{ textTransform: "none", width: "9rem", borderRadius: '0px', backgroundColor: "#217e76" }}
+                                            onClick={handleDialog}
+                                            variant="contained"
+                                        >
+                                            Assign Contact
+                                        </Button>
+                                        <div style={{ width: "13rem" }}>
+                                            <MTableToolbar {...props} />
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            ),
+                        }}
                     />
-                    {assignDialogOpen && <AssingDeleDialog handleAssignCloseDialog={handleAssignCloseDialog} handleAddRow={handleAddRow} dialogSelectedRow={selectedRow} />}
                     {assignDeleDialogOpen && <AssignDeleTableDialog flag="replace" handleDeleTableClose={() => setAssignDeleDialogOpen(false)}
-                        handleAddRow={handleAddRow}
+                        handleAddRow={handleAddRow} handleReplaceRow={handleReplaceRow}
                     />}
 
                 </div>
