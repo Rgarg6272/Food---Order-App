@@ -17,10 +17,32 @@ import { TablePagination } from "@material-ui/core";
 import MaterialTable, { MTableToolbar } from "material-table";
 import { Column } from "jspdf-autotable";
 
-const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => {
+const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow , handleReplaceRow}) => {
     const classes = useStyles();
     const [tableData, setData] = useState(DelegatedContactData);
     const [count, setCount] = useState(tableData && tableData.length > 0 ? tableData.length : 0);
+
+    const tableStyle = {
+        border: "1px solid lightgray",
+    }
+
+    const CellBorderStyle = {
+        border: "1px solid lightgray",
+    }
+
+    const getPageSizeOptions = () => {
+        // console.log('count::', count)
+        return [5, 10];
+        // if (count <= 5) {
+        //   return [count];
+        // } else if (count <= 10) {
+        //   return [5, count];
+        // } else if (count <= 20) {
+        //   return [5, 10, count];
+        // } else {
+        //   return [5, 10, 20, count];
+        // }
+    };
 
     const CustomRadio = ({ isChecked, isEven, onSelect }) => {
         return (
@@ -42,52 +64,6 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => 
                 textAlign: "center",
                 minWidth: 30,
                 maxWidth: 30,
-            },
-            align: 'start'
-        },
-        {
-            title: "Delegate",
-            field: "Delegate",
-            filtering: true,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 600,
-                minWidth: 190,
-                maxWidth: 190,
-            },
-            align: 'start'
-        },
-        {
-            title: "Contact Type",
-            field: "Contact_Type",
-            filtering: true,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400,
-            },
-            align: 'start'
-        },
-        {
-            title: "Contact Name",
-            field: "Contact_Name",
-            filtering: true,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400
-            },
-            align: 'start'
-        },
-        {
-            title: "Cell Phone",
-            field: "Cell_Phone",
-            filtering: false,
-            cellStyle: {
-                color: "#555151",
-                fontSize: commonFontSizes.bodyTwo + "rem",
-                fontWeight: 400
             },
             align: 'start'
         },
@@ -129,31 +105,25 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => 
     const [open, setOpen] = useState(true);
     const [searchDialogOpen, setSearchDialogOpen] = useState(false);
     const [clickedButton, setClickedButton] = useState(null);
-
-    useEffect(() => {
-        if (tableData.length > 0) {
-            setSelectedRow(tableData[0]);
-        }
-    }, [tableData]);
     const handleRowSelection = (rowData) => {
         console.log("selected row data", rowData);
-        //setSelectedRow(selectedRow === rowData ? null : rowData);
         setSelectedRow(rowData);
     };
     const handleClose = () => {
         setOpen(false);
         handleDeleTableClose()
     };
-
     const handleAssign = () => {
         setOpen(false);
         setSearchDialogOpen(true);
     };
-
     const handleAlertDeleClose = () => {
         setSearchDialogOpen(false);
     }
-
+    const handleReplace = () => {
+       handleReplaceRow(selectedRow);
+       setOpen(false);
+    }
     const Replacebody = (
         <>
             <Grid container>
@@ -177,50 +147,10 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => 
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Paper elevation={0} className={classes.contentPaper}>
-                                    <div className={classes.customToolbar}>
-                                        <MuiThemeProvider theme={theme}>
-                                            <div className="tableContainer1" style={tableStyle}>
-                                                <MaterialTable
-                                                    autoHeight={true}
-                                                    key={count}
-                                                    data={tableData}
-                                                    columns={columns}
-                                                />
-                                            </div>
-                                        </MuiThemeProvider>
-                                    </div>
                                 </Paper>
                             </Grid>
                         </Grid>
                     </DialogContent>
-                    <Grid container>
-                        <Grid
-                            item
-                            xs={12}
-                            style={{
-                                display: "flex",
-                                justifyContent: "end",
-                                marginRight: "25px",
-                                position: 'relative',
-                                bottom: '17px'
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                style={{
-                                    borderRadius: 0,
-                                    height: "30px",
-                                    textTransform: "capitalize",
-                                    backgroundColor: '#217e76'
-                                }}
-                            >
-                                Replace
-                            </Button>
-                        </Grid>
                     </Grid>
                 </Dialog>
             </Grid>
@@ -257,10 +187,113 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => 
                                         Subscriber ID
                                         </label>
                                 </div>
+                                <form className={classes.root} noValidate autoComplete="off" style={{ position: 'relative', left: '-5px', bottom: '10px' }}>
+                                    <TextField
+                                        id="outlined-basic"
+                                        variant="outlined"
+                                        InputProps={{
+                                            classes: { input: classes.customInput },
+                                        }}
+                                        InputLabelProps={{
+                                            classes: { outlined: classes.customLabel },
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        style={{
+                                            borderRadius: "4px",
+                                            textTransform: "capitalize",
+                                            backgroundColor: '#217e76',
+                                            position: "relative",
+                                            left: '15px',
+                                            width: '10rem'
+                                        }}
+                                    >
+                                        Search Contact
+                                    </Button>
+                                </form>
                             </Grid>
                         </Grid>
+                        
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Paper elevation={0} className={classes.contentPaper}>
+                                    <div className={classes.customToolbar}>
+                                        <MuiThemeProvider theme={theme}>
+                                            <div className="tableContainer1" style={tableStyle}>
+                                                <MaterialTable
+                                                    autoHeight={true}
+                                                    key={count}
+                                                    data={tableData}
+                                                    columns={columns}
+                                                    options={{
+                                                        paging: false,
+                                                        search: false,
+                                                        toolbar: false,
+                                                        sorting: false,
+                                                        detailPanelType: "single",
+                                                        selection: false,
+                                                        maxBodyHeight: "40vh",
+                                                        overflowY: "hidden !important",
+                                                        padding: "dense",
+                                                        filtering: false,
+                                                        showTitle: false,
+                                                        doubleHorizontalScroll: false,
+                                                        headerStyle: {
+                                                            whiteSpace: "nowrap",
+                                                            position: "sticky",
+                                                            fontWeight: 700,
+                                                            fontSize: commonFontSizes.bodyTwo + "rem",
+                                                            color: "#2C2B2C",
+                                                            border: "0px solid lightgrey",
+                                                            textAlign: "start"
+                                                        },
+                                                        cellStyle: () => CellBorderStyle,
+                                                        rowStyle: (row) => {
+                                                            const id = row.tableData.id;
+                                                            return {
+                                                                backgroundColor: id % 2 === 0 ? "#F5F5F5" : "#fff",
+                                                                borderBottom: "1px solid lightgray",
+                                                                borderTop: id === 0 ? "1px solid lightgray" : "none",
+                                                            }
+                                                        },
+                                                    }}
+                                                />
+                                            </div>
+                                        </MuiThemeProvider>
+                                    </div>
+                                </Paper>
+                            </Grid>
                         </Grid>
                     </DialogContent>
+                    <Grid container>
+                        <Grid
+                            item
+                            xs={12}
+                            style={{
+                                display: "flex",
+                                justifyContent: "end",
+                                marginRight: "25px",
+                                position: 'relative',
+                                bottom: '15px'
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                style={{
+                                    borderRadius: 0,
+                                    height: "30px",
+                                    textTransform: "capitalize",
+                                    backgroundColor: '#217e76'
+                                }}
+                                onClick={handleAssign}
+                            >
+                                Assign
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Dialog>
             </Grid>
@@ -282,4 +315,5 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow }) => 
         </div>
     );
 };
+
 export default AssignDeleTableDialog;
