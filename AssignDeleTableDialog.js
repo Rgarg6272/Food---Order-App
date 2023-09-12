@@ -13,9 +13,7 @@ import AlertDeleDialog from "./AlertDeleDialog";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { DelegatedContactData, AdDelegateContactData } from "../../../constants/memberData";
 import { commonFontSizes } from "../../css/FontSizes";
-import { TablePagination } from "@material-ui/core";
 import MaterialTable, { MTableToolbar } from "material-table";
-import { Column } from "jspdf-autotable";
 
 const theme = createMuiTheme({
     overrides: {
@@ -96,25 +94,20 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow , hand
     const [searchDialogOpen, setSearchDialogOpen] = useState(false);
     const [clickedButton, setClickedButton] = useState(null);
     const [isSearchClicked, setIsSearchClicked] = useState(false);
-
     const tableStyle = {
         border: "1px solid lightgray",
     }
-
     const CellBorderStyle = {
         border: "1px solid lightgray",
     }
-
     const getPageSizeOptions = () => {
         return [5, 10];
     };
-
     const CustomRadio = ({ isChecked, isEven, onSelect }) => {
         return (
             <Radio checked={isChecked} onClick={onSelect} style={{ color: isEven ? "#217e76" : "#217e76" }} />
         );
     };
-
     const columns = [
         {
             title: "",
@@ -211,23 +204,17 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow , hand
             align: 'start'
         },
     ];
-
     const handleSearchClick = () => {
         setIsSearchClicked(true);
     }
-
     useEffect(() => {
         if (tableData.length > 0) {
             setSelectedRow(tableData[0]);
         }
     }, [tableData]);
 
-
-
-
     const handleRowSelection = (rowData) => {
         console.log("selected row data", rowData);
-        //setSelectedRow(selectedRow === rowData ? null : rowData);
         setSelectedRow(rowData);
     };
 
@@ -239,35 +226,16 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow , hand
     const handleAssign = () => {
         setOpen(false);
         setSearchDialogOpen(true);
-
-        // if(selectedRow) {
-        //     const newRow = {...selectedRow};
-        //     const missingColumns = mainTableColumns
-        //          .filter(column => !newRow[column.field])
-        //          .map(column => column.field);
-        //     missingColumns.forEach(column => {
-        //         newRow[column] = "-";
-        //     });
-        //     handleAddRow(newRow);
-
-        // }
     };
 
     const handleAlertDeleClose = () => {
         setSearchDialogOpen(false);
     }
 
-    // const handleReplaceRow = () => {
-    //     handleAssignCloseDialog(selectedRowData);
-    //     setOpen(false);
-    // }
-
     const handleReplace = () => {
        handleReplaceRow(selectedRow);
        setOpen(false);
     }
-
-    
 
     const Replacebody = (
         <>
@@ -535,5 +503,4 @@ const AssignDeleTableDialog = ({ flag, handleDeleTableClose, handleAddRow , hand
         </div>
     );
 };
-
 export default AssignDeleTableDialog;
