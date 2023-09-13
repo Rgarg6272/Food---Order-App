@@ -13,38 +13,9 @@ const DynamicTable = () => {
 
   const [data, setData] = useState(tableData);
 
-  const addColumn = () => {
-    const columnName = prompt("Enter column name:");
-    if (columnName) {
-      setColumns([...columns, { title: columnName, field: columnName }]);
-    }
-  };
 
-  const addData = () => {
-    console.log("Data");
-    const newDataEntry = {};
-    columns.forEach((column) => {
-      const inputValue = prompt(`Enter data for ${column.title}:`);
-      if (inputValue) {
-        newDataEntry[column.field] = inputValue;
-      }
-    });
-    if (Object.keys(newDataEntry).length > 0) {
-      setData([...data, newDataEntry]);
-    }
-  };
   return (
     <div>
-      <div className="buttonHeader">
-        <Button variant="outlined" onClick={addColumn}>
-          Add Column
-        </Button>
-        <span style={{ visibility: "hidden" }}>Hey there</span>
-        <Button variant="outlined" onClick={addData}>
-          Add Data
-        </Button>
-      </div>
-
       <div className="tableStyle">
         <MaterialTable
           title="Dynamic Material Table"
