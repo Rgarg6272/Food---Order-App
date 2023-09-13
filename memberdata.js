@@ -1,23 +1,8 @@
-
-import MemberSearch from "../assets/MemberSearch.png";
-import ManageContacts from "../assets/ManageContacts.png";
-import MemberContacts from "../assets/MemberContacts.png";
-
-
-export const HomePageDetails = [
-  {
-    id: 1,
-    label: 'MEMBER SEARCH',
-    path: MemberSearch
-  },
-  {
-    id: 2,
-    label: 'MANAGE DELEGATED CONTACTS',
-    path: ManageContacts
-  },
-  {
-    id: 3,
-    label: 'MANAGE MEMBER DELEGATED CONTACTS',
-    path: MemberContacts
-  },
+export const tableData = [
+  { id: 1, name: "John", age: 30 },
+  { id: 2, name: "Jone", age: 20 },
+  { id: 3, name: "Krish", age: 23 },
+  { id: 4, name: "Max", age: 43 },
+  { id: 5, name: "Dan", age: 25 },
+  { id: 6, name: "Raj", age: 23 },
 ];
